@@ -438,11 +438,11 @@ int main(void) {
         }
       }
 
-      if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+      if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
         fast_fall = true;
       }
 
-      if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
+      if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
         while (t.can_move_down(other_blocks)) {
           t.move_down();
         }
