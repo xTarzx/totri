@@ -414,6 +414,7 @@ int main(void) {
   bool should_exit = false;
 
   while (!should_exit && !WindowShouldClose()) {
+    bool fast_fall = false;
 
     if (!lost) {
 
@@ -437,6 +438,10 @@ int main(void) {
         }
       }
 
+      if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
+        fast_fall = true;
+      }
+
       if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
         while (t.can_move_down(other_blocks)) {
           t.move_down();
@@ -445,6 +450,10 @@ int main(void) {
       }
 
       move_down_timer -= dt;
+
+      if (fast_fall) {
+        move_down_timer -= 3*dt;
+      }
 
       game_bound_check(&t);
 
