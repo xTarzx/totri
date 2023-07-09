@@ -22,6 +22,7 @@ const int window_height = grid_v_count * grid_size_p;
 const int window_width = window_height;
 
 const Color block_color = GetColor(0x888888DD);
+const Color ghost_color = GetColor(0x88888822);
 
 struct Block {
   Vector2 center;
@@ -146,13 +147,13 @@ struct Tetromino {
     blocks.push_back(b);
   }
 
-  void draw_raylib(Vector2 offset) {
+  void draw_raylib(Vector2 offset, Color color) {
     for (auto &block : blocks) {
       Rectangle rect = block.get_rect();
       rect.x += offset.x;
       rect.y += offset.y;
 
-      DrawRectangleRec(rect, block_color);
+      DrawRectangleRec(rect, color);
     }
   }
 };
@@ -403,7 +404,6 @@ int main(void) {
 
   int lines_deleted = 0;
 
-  // TODO: generate next block beforehand
 
   std::vector<Block> other_blocks;
 
@@ -494,7 +494,22 @@ int main(void) {
 
     DrawRectangle(0, 0, game_width, window_height, GetColor(0x111111FF));
 
-    t.draw_raylib({0, 0});
+    t.draw_raylib({0, 0}, block_color);
+
+    
+    Tetromino ghost = t;
+
+    for (int i = ghost.rot_point.y; i < window_height; ++i) {
+    ghost.move_down();
+    }
+
+    game_bound_check(&ghost);
+    while (colliding(ghost, other_blocks)) {
+      ghost.move_up();
+    }
+
+    ghost.draw_raylib({0,0}, ghost_color);
+
 
     for (auto &block : other_blocks) {
       Rectangle rect = block.get_rect();
@@ -505,9 +520,8 @@ int main(void) {
     draw_grid();
 
     // display next block
-    next_t.draw_raylib({game_width - grid_size_p, grid_size_p * 5});
+    next_t.draw_raylib({game_width - grid_size_p, grid_size_p * 5}, block_color);
 
-    // TODO: display points
 
     DrawText(std::to_string(lines_deleted).c_str(), window_width - 64,
              grid_size_p, 32, block_color);
