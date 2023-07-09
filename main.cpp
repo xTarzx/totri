@@ -404,7 +404,6 @@ int main(void) {
 
   int lines_deleted = 0;
 
-
   std::vector<Block> other_blocks;
 
   const float move_down_timer_r = 0.5;
@@ -452,7 +451,7 @@ int main(void) {
       move_down_timer -= dt;
 
       if (fast_fall) {
-        move_down_timer -= 3*dt;
+        move_down_timer -= 3 * dt;
       }
 
       game_bound_check(&t);
@@ -496,11 +495,10 @@ int main(void) {
 
     t.draw_raylib({0, 0}, block_color);
 
-    
     Tetromino ghost = t;
 
     for (int i = ghost.rot_point.y; i < window_height; ++i) {
-    ghost.move_down();
+      ghost.move_down();
     }
 
     game_bound_check(&ghost);
@@ -508,8 +506,7 @@ int main(void) {
       ghost.move_up();
     }
 
-    ghost.draw_raylib({0,0}, ghost_color);
-
+    ghost.draw_raylib({0, 0}, ghost_color);
 
     for (auto &block : other_blocks) {
       Rectangle rect = block.get_rect();
@@ -520,8 +517,8 @@ int main(void) {
     draw_grid();
 
     // display next block
-    next_t.draw_raylib({game_width - grid_size_p, grid_size_p * 5}, block_color);
-
+    next_t.draw_raylib({game_width - grid_size_p, grid_size_p * 5},
+                       block_color);
 
     DrawText(std::to_string(lines_deleted).c_str(), window_width - 64,
              grid_size_p, 32, block_color);
