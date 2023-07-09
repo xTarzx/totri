@@ -497,13 +497,8 @@ int main(void) {
 
     Tetromino ghost = t;
 
-    for (int i = ghost.rot_point.y; i < window_height; ++i) {
+    while (ghost.can_move_down(other_blocks)) {
       ghost.move_down();
-    }
-
-    game_bound_check(&ghost);
-    while (colliding(ghost, other_blocks)) {
-      ghost.move_up();
     }
 
     ghost.draw_raylib({0, 0}, ghost_color);
